@@ -13,6 +13,7 @@ from eltools.diff import DiffResult, diff_documents
 from eltools.document import STYLES, Document, ElementorDataError, dumps, loads
 from eltools.extract import extract_fields, insert_fields
 from eltools.fields import TEXT_FIELDS
+from eltools.find import find_elements, parse_condition
 from eltools.replace import replace_text
 from eltools.tree import element_counts, max_depth, walk, widget_counts
 from eltools.validate import errors_only, validate
@@ -159,6 +160,33 @@ def cmd_widgets(args: argparse.Namespace) -> int:
     print(f"{'-' * width}  --")
     print(f"{'total':<{width}}  {sum(counts.values())}")
     return 0
+
+
+def cmd_find(args: argparse.Namespace) -> int:
+    doc = _read_doc(args.input)
+    conditions = [parse_condition(spec) for spec in args.setting]
+    if not args.type and not conditions:
+        raise ElementorDataError("give --type and/or at least one --setting")
+    hits = find_elements(doc.elements, args.type, conditions)
+    if args.json:
+        rows = [
+            {
+                "path": h.node.path_str,
+                "pointer": h.node.pointer,
+                "id": h.node.id,
+                "kind": h.node.kind,
+                "trail": h.node.trail,
+                "settings": h.values,
+            }
+            for h in hits
+        ]
+        print(json.dumps(rows, indent=2, ensure_ascii=False))
+    else:
+        for h in hits:
+            shown = "  ".join(f"{k}={_short(v, 50)}" for k, v in h.values.items())
+            print(f"{h.node.path_str:<12} {h.node.kind} #{h.node.id}  {shown}".rstrip())
+        print(f"{len(hits)} match(es)", file=sys.stderr)
+    return 0 if hits else 1
 
 
 def cmd_extract(args: argparse.Namespace) -> int:
@@ -324,6 +352,22 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--type", help="list instances of this widgetType")
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_widgets)
+
+    s = sub.add_parser(
+        "find", help="find elements by widget type and setting values (exit 1 if none)"
+    )
+    s.add_argument("input")
+    s.add_argument("--type", help="only this widgetType")
+    s.add_argument(
+        "--setting",
+        action="append",
+        default=[],
+        metavar="TEST",
+        help="PATH (set and non-empty), PATH=VALUE (exact) or PATH~TEXT (contains, "
+        "case-insensitive); dotted paths such as link.url or tabs.0.tab_title; repeatable (AND)",
+    )
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_find)
 
     s = sub.add_parser("extract", help="write widget text fields to files")
     s.add_argument("input")
