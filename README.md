@@ -114,7 +114,14 @@ eltools validate page.json               # exit 1 on structural errors; --strict
 eltools tree page.json --max-depth 2     # paths, nesting and ids
 eltools widgets page.json                # counts per widgetType
 eltools widgets page.json --type html    # where every html widget lives
+eltools find page.json --type button --setting 'link.url~/shop/'   # buttons linking to /shop/
+eltools find page.json --setting header_size=h1 --json            # every element whose setting equals h1
 ```
+
+`find` filters by `--type` and/or `--setting` (repeat `--setting`; all must match). A test is `PATH`
+(set and non-empty), `PATH=VALUE` (exact, case-sensitive) or `PATH~TEXT` (contains, case-insensitive).
+Paths are dotted and may index repeater lists, e.g. `link.url` or `tabs.0.tab_title`. It prints the index
+path, id and values (or `--json` with JSON pointers) and exits 1 when nothing matches.
 
 Validation catches: invalid or missing `elType`, widgets without `widgetType`, missing or
 duplicate ids, wrong nesting (a widget directly in a section, a column in a column, a
