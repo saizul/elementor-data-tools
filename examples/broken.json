@@ -1,0 +1,50 @@
+[
+  {
+    "id": "aaaaaaa",
+    "elType": "section",
+    "settings": {},
+    "elements": [
+      {
+        "id": "bbbbbbb",
+        "elType": "column",
+        "settings": {
+          "_column_size": 100
+        },
+        "elements": [
+          {
+            "id": "ccccccc",
+            "elType": "widget",
+            "settings": {
+              "title": "No widgetType here"
+            },
+            "elements": []
+          },
+          {
+            "id": "ccccccc",
+            "elType": "widget",
+            "widgetType": "heading",
+            "settings": {
+              "title": "Duplicate id"
+            },
+            "elements": []
+          }
+        ]
+      },
+      {
+        "id": "ddddddd",
+        "elType": "widget",
+        "widgetType": "button",
+        "settings": {
+          "text": "Widget directly in a section"
+        },
+        "elements": []
+      }
+    ]
+  },
+  {
+    "id": "eeeeeee",
+    "elType": "column",
+    "settings": {},
+    "elements": []
+  }
+]

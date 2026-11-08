@@ -1,0 +1,458 @@
+{
+  "version": "0.4",
+  "title": "Lumen Coffee Roasters - Home (v2)",
+  "type": "page",
+  "content": [
+    {
+      "id": "4f1a9c2",
+      "elType": "section",
+      "isInner": false,
+      "elements": [
+        {
+          "id": "7be03d1",
+          "elType": "column",
+          "isInner": false,
+          "elements": [
+            {
+              "id": "c2d9a40",
+              "elType": "widget",
+              "widgetType": "html",
+              "elements": [],
+              "settings": {
+                "html": "<div class=\"lumen-badge\">\n  <style>.lumen-badge{font:600 13px/1 system-ui;letter-spacing:.08em;text-transform:uppercase;color:#b5651d}</style>\n  <span>Small-batch roasters &mdash; est. 2016</span>\n</div>"
+              }
+            },
+            {
+              "id": "1a7f3e9",
+              "elType": "widget",
+              "widgetType": "heading",
+              "isInner": false,
+              "elements": [],
+              "settings": {
+                "title": "Coffee roasted for slower mornings",
+                "header_size": "h1",
+                "align": "center",
+                "title_color": "#2b2118",
+                "typography_typography": "custom",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 40,
+                  "sizes": []
+                }
+              }
+            },
+            {
+              "id": "93bc1d5",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "elements": [],
+              "settings": {
+                "editor": "<p>We roast in <strong>small batches</strong> every Tuesday and Friday, so your beans are never more than a week old.</p>",
+                "text_color": "#4a3f35"
+              }
+            },
+            {
+              "id": "e84a0b7",
+              "elType": "widget",
+              "widgetType": "button",
+              "elements": [],
+              "settings": {
+                "text": "Shop the roastery now",
+                "link": {
+                  "url": "https://demo.example.com/shop/?utm_source=home",
+                  "is_external": "",
+                  "nofollow": "",
+                  "custom_attributes": ""
+                },
+                "align": "center",
+                "background_color": "#b5651d",
+                "button_text_color": "#ffffff"
+              }
+            }
+          ],
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          }
+        }
+      ],
+      "settings": {
+        "layout": "boxed",
+        "gap": "default",
+        "structure": "10",
+        "background_background": "classic",
+        "background_color": "#f6efe6",
+        "padding": {
+          "unit": "px",
+          "top": "100",
+          "right": "20",
+          "bottom": "100",
+          "left": "20",
+          "isLinked": false
+        }
+      }
+    },
+    {
+      "id": "a0c55e8",
+      "elType": "section",
+      "isInner": false,
+      "elements": [
+        {
+          "id": "3d7e12f",
+          "elType": "column",
+          "isInner": false,
+          "elements": [
+            {
+              "id": "5b9ac41",
+              "elType": "widget",
+              "widgetType": "image",
+              "elements": [],
+              "settings": {
+                "image": {
+                  "url": "https://demo.example.com/wp-content/uploads/2024/05/beans-ethiopia.jpg",
+                  "id": 101,
+                  "size": "",
+                  "alt": "Ethiopia Guji beans",
+                  "source": "library"
+                },
+                "image_size": "large",
+                "caption_source": "custom",
+                "caption": "Ethiopia Guji beans"
+              }
+            },
+            {
+              "id": "d41f8a6",
+              "elType": "widget",
+              "widgetType": "heading",
+              "isInner": false,
+              "elements": [],
+              "settings": {
+                "title": "Ethiopia Guji",
+                "header_size": "h3",
+                "align": "center",
+                "title_color": "#2b2118",
+                "typography_typography": "custom",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 40,
+                  "sizes": []
+                }
+              }
+            },
+            {
+              "id": "0e6b7c3",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "elements": [],
+              "settings": {
+                "editor": "<p>Jasmine, peach and bergamot. Washed process, 1900m.</p>",
+                "text_color": "#4a3f35"
+              }
+            }
+          ],
+          "settings": {
+            "_column_size": 33,
+            "_inline_size": null
+          }
+        },
+        {
+          "id": "b82c9d0",
+          "elType": "column",
+          "isInner": false,
+          "elements": [
+            {
+              "id": "7a3e5f1",
+              "elType": "widget",
+              "widgetType": "image",
+              "elements": [],
+              "settings": {
+                "image": {
+                  "url": "https://demo.example.com/wp-content/uploads/2024/05/beans-colombia.jpg",
+                  "id": 102,
+                  "size": "",
+                  "alt": "Colombia Huila beans",
+                  "source": "library"
+                },
+                "image_size": "large",
+                "caption_source": "custom",
+                "caption": "Colombia Huila beans"
+              }
+            },
+            {
+              "id": "29c0e4b",
+              "elType": "widget",
+              "widgetType": "heading",
+              "isInner": false,
+              "elements": [],
+              "settings": {
+                "title": "Colombia Huila",
+                "header_size": "h3",
+                "align": "center",
+                "title_color": "#2b2118",
+                "typography_typography": "custom",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 40,
+                  "sizes": []
+                }
+              }
+            },
+            {
+              "id": "f16d3a8",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "elements": [],
+              "settings": {
+                "editor": "<p>Red apple, panela and milk chocolate.</p>",
+                "text_color": "#4a3f35"
+              }
+            },
+            {
+              "id": "fa05c13",
+              "elType": "widget",
+              "widgetType": "button",
+              "elements": [],
+              "settings": {
+                "text": "Brew guide",
+                "link": {
+                  "url": "https://demo.example.com/brew-guide/",
+                  "is_external": "",
+                  "nofollow": "",
+                  "custom_attributes": ""
+                },
+                "align": "center",
+                "background_color": "#2b2118",
+                "button_text_color": "#ffffff"
+              }
+            }
+          ],
+          "settings": {
+            "_column_size": 33,
+            "_inline_size": null
+          }
+        },
+        {
+          "id": "6c0f8e2",
+          "elType": "column",
+          "isInner": false,
+          "elements": [
+            {
+              "id": "84d2b9a",
+              "elType": "widget",
+              "widgetType": "image",
+              "elements": [],
+              "settings": {
+                "image": {
+                  "url": "https://demo.example.com/wp-content/uploads/2024/05/beans-sumatra.jpg",
+                  "id": 103,
+                  "size": "",
+                  "alt": "Sumatra Mandheling beans",
+                  "source": "library"
+                },
+                "image_size": "large",
+                "caption_source": "custom",
+                "caption": "Sumatra Mandheling beans"
+              }
+            },
+            {
+              "id": "c95e0f4",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "elements": [],
+              "settings": {
+                "editor": "<p>Cedar, dark cocoa and a long, syrupy finish.</p>",
+                "text_color": "#4a3f35"
+              }
+            }
+          ],
+          "settings": {
+            "_column_size": 33,
+            "_inline_size": null
+          }
+        }
+      ],
+      "settings": {
+        "layout": "boxed",
+        "gap": "default",
+        "structure": "30",
+        "padding": {
+          "unit": "px",
+          "top": "60",
+          "right": "20",
+          "bottom": "60",
+          "left": "20",
+          "isLinked": false
+        }
+      }
+    },
+    {
+      "id": "e5f2a71",
+      "elType": "section",
+      "isInner": false,
+      "elements": [
+        {
+          "id": "92a4d6c",
+          "elType": "column",
+          "isInner": false,
+          "elements": [
+            {
+              "id": "08b3f5e",
+              "elType": "widget",
+              "widgetType": "heading",
+              "isInner": false,
+              "elements": [],
+              "settings": {
+                "title": "Questions, answered",
+                "header_size": "h2",
+                "align": "center",
+                "title_color": "#2b2118",
+                "typography_typography": "custom",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 40,
+                  "sizes": []
+                }
+              }
+            },
+            {
+              "id": "4c1e7a9",
+              "elType": "widget",
+              "widgetType": "accordion",
+              "elements": [],
+              "settings": {
+                "tabs": [
+                  {
+                    "_id": "a1b2c3d",
+                    "tab_title": "How fresh is the coffee?",
+                    "tab_content": "<p>Roasted to order, shipped within 48 hours.</p>"
+                  },
+                  {
+                    "_id": "b2c3d4e",
+                    "tab_title": "Can I pause my subscription?",
+                    "tab_content": "<p>Yes. Skip, swap or pause from your account at any time.</p>"
+                  },
+                  {
+                    "_id": "c3d4e5f",
+                    "tab_title": "Do you ship abroad?",
+                    "tab_content": "<p>We ship to 24 countries. See the <a href=\"https://demo.example.com/shipping/\">shipping page</a>.</p>"
+                  }
+                ],
+                "selected_icon": {
+                  "value": "fas fa-plus",
+                  "library": "fa-solid"
+                }
+              }
+            }
+          ],
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          }
+        }
+      ],
+      "settings": {
+        "layout": "boxed",
+        "gap": "default",
+        "structure": "10",
+        "background_background": "classic",
+        "background_color": "#fffaf3"
+      }
+    },
+    {
+      "id": "1c9b3d7",
+      "elType": "section",
+      "isInner": false,
+      "elements": [
+        {
+          "id": "6e2f0a4",
+          "elType": "column",
+          "isInner": false,
+          "elements": [
+            {
+              "id": "b7d40e2",
+              "elType": "widget",
+              "widgetType": "html",
+              "elements": [],
+              "settings": {
+                "html": "<form class=\"lumen-signup\" action=\"https://demo.example.com/subscribe/\" method=\"post\">\n  <label for=\"lumen-email\">Get the Friday brew notes</label>\n  <input id=\"lumen-email\" type=\"email\" name=\"email\" placeholder=\"you@example.com\" required>\n  <button type=\"submit\">Subscribe</button>\n</form>\n<script>\ndocument.querySelector('.lumen-signup').addEventListener('submit', function () {\n  window.dataLayer = window.dataLayer || [];\n  window.dataLayer.push({event: 'newsletter_submit'});\n});\n</script>"
+              }
+            }
+          ],
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          }
+        }
+      ],
+      "settings": {
+        "layout": "boxed",
+        "gap": "default",
+        "structure": "10",
+        "padding": {
+          "unit": "px",
+          "top": "50",
+          "right": "20",
+          "bottom": "50",
+          "left": "20",
+          "isLinked": false
+        }
+      }
+    },
+    {
+      "id": "d6a8e03",
+      "elType": "section",
+      "isInner": false,
+      "elements": [
+        {
+          "id": "3f9c1b5",
+          "elType": "column",
+          "isInner": false,
+          "elements": [
+            {
+              "id": "77e1a2c",
+              "elType": "widget",
+              "widgetType": "heading",
+              "isInner": false,
+              "elements": [],
+              "settings": {
+                "title": "Visit the roastery",
+                "header_size": "h2",
+                "align": "center",
+                "title_color": "#2b2118",
+                "typography_typography": "custom",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 40,
+                  "sizes": []
+                }
+              }
+            },
+            {
+              "id": "5a0d9b6",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "elements": [],
+              "settings": {
+                "editor": "<p>12 Example Street, Demoville. Open Wed-Sun, 8am to 4pm.</p>",
+                "text_color": "#4a3f35"
+              }
+            }
+          ],
+          "settings": {
+            "_column_size": 100,
+            "_inline_size": null
+          }
+        }
+      ],
+      "settings": {
+        "layout": "boxed",
+        "gap": "default",
+        "structure": "10"
+      }
+    }
+  ],
+  "page_settings": {
+    "hide_title": "yes",
+    "template": "elementor_canvas"
+  }
+}
