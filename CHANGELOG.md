@@ -7,6 +7,7 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- `images` command: list every image (media controls, background images and `<img>` tags inside HTML) with URL and alt text; `--missing-alt` shows only images without alt text and exits 1 when there are any, for audits and CI.
 - `find` command: locate elements by `--type` and `--setting` tests (`PATH`, `PATH=VALUE`, `PATH~TEXT`, dotted paths into repeaters).
 
 ## [1.0.0] - 2026-11-08

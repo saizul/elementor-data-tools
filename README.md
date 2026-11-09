@@ -123,6 +123,20 @@ eltools find page.json --setting header_size=h1 --json            # every elemen
 Paths are dotted and may index repeater lists, e.g. `link.url` or `tabs.0.tab_title`. It prints the index
 path, id and values (or `--json` with JSON pointers) and exits 1 when nothing matches.
 
+### Audit image alt text
+
+```bash
+eltools images page.json                 # every image: location, URL and alt text
+eltools images page.json --missing-alt   # only images without alt text (exit 1 if any)
+eltools images page.json --json          # machine readable, includes JSON pointers
+```
+
+`images` looks at Elementor media controls (image widget, image box, carousels, galleries, video
+overlays ...), background images, and `<img>` tags inside any HTML text field. Background images are
+decorative and never flagged. An `<img>` with `alt=""` is treated as intentionally decorative, while a
+missing `alt` attribute is flagged. For media controls an empty stored alt is flagged; Elementor may
+still use the alt text of the media library item at render time, which an export cannot show.
+
 Validation catches: invalid or missing `elType`, widgets without `widgetType`, missing or
 duplicate ids, wrong nesting (a widget directly in a section, a column in a column, a
 top-level column), non-list `elements`, bad `settings`. Odd ids and a missing `elements`

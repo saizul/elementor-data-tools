@@ -14,6 +14,7 @@ from eltools.document import STYLES, Document, ElementorDataError, dumps, loads
 from eltools.extract import extract_fields, insert_fields
 from eltools.fields import TEXT_FIELDS
 from eltools.find import find_elements, parse_condition
+from eltools.images import find_images
 from eltools.replace import replace_text
 from eltools.tree import element_counts, max_depth, walk, widget_counts
 from eltools.validate import errors_only, validate
@@ -187,6 +188,45 @@ def cmd_find(args: argparse.Namespace) -> int:
             print(f"{h.node.path_str:<12} {h.node.kind} #{h.node.id}  {shown}".rstrip())
         print(f"{len(hits)} match(es)", file=sys.stderr)
     return 0 if hits else 1
+
+
+def cmd_images(args: argparse.Namespace) -> int:
+    doc = _read_doc(args.input)
+    refs = find_images(doc.elements)
+    total = len(refs)
+    missing = sum(1 for r in refs if r.missing_alt)
+    if args.missing_alt:
+        refs = [r for r in refs if r.missing_alt]
+    if args.json:
+        rows = [
+            {
+                "path": r.node.path_str,
+                "pointer": r.node.pointer,
+                "id": r.node.id,
+                "widget": r.node.kind,
+                "field": r.field,
+                "kind": r.kind,
+                "url": r.url,
+                "alt": r.alt,
+                "attachment_id": r.attachment_id,
+                "missing_alt": r.missing_alt,
+            }
+            for r in refs
+        ]
+        print(json.dumps(rows, indent=2, ensure_ascii=False))
+    else:
+        for r in refs:
+            if r.kind == "background":
+                alt = "(background)"
+            elif r.missing_alt:
+                alt = "alt=MISSING"
+            else:
+                alt = f"alt={_short(r.alt or '', 60)}"
+            print(f"{r.node.path_str:<12} {r.node.kind} #{r.node.id}  {r.field}  {r.url}  {alt}")
+        print(f"{total} image(s), {missing} without alt text", file=sys.stderr)
+    if args.missing_alt:
+        return 1 if refs else 0
+    return 0
 
 
 def cmd_extract(args: argparse.Namespace) -> int:
@@ -368,6 +408,14 @@ def build_parser() -> argparse.ArgumentParser:
     )
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_find)
+
+    s = sub.add_parser(
+        "images", help="list images with their alt text (--missing-alt exits 1 if any lack it)"
+    )
+    s.add_argument("input")
+    s.add_argument("--missing-alt", action="store_true", help="only images with no alt text")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_images)
 
     s = sub.add_parser("extract", help="write widget text fields to files")
     s.add_argument("input")
