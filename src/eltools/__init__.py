@@ -4,6 +4,7 @@ from eltools.diff import DiffResult, diff_documents
 from eltools.document import Document, ElementorDataError, dumps, load, loads
 from eltools.extract import extract_fields, insert_fields
 from eltools.fields import TEXT_FIELDS
+from eltools.images import ImageRef, find_images
 from eltools.replace import Change, replace_text
 from eltools.tree import Node, element_counts, find_by_id, walk, widget_counts
 from eltools.validate import Issue, validate
@@ -17,6 +18,7 @@ __all__ = [
     "DiffResult",
     "Document",
     "ElementorDataError",
+    "ImageRef",
     "Issue",
     "Node",
     "command_template",
@@ -25,6 +27,7 @@ __all__ = [
     "element_counts",
     "extract_fields",
     "find_by_id",
+    "find_images",
     "insert_fields",
     "load",
     "loads",
