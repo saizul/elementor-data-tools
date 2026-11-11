@@ -7,6 +7,7 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- `links` command: list every link (Elementor link controls and `<a href>` tags inside HTML) with its type, new-tab/nofollow flags and anchor text; flags buttons without a link, `#` placeholders, `http://` URLs, URLs missing a scheme, stray whitespace and hosts given with `--forbid-host` (staging or old domains). `--check` shows only flagged links and exits 1 when there are any; `--site` separates internal from external links; `--hosts` prints a per-host count.
 - `images` command: list every image (media controls, background images and `<img>` tags inside HTML) with URL and alt text; `--missing-alt` shows only images without alt text and exits 1 when there are any, for audits and CI.
 - `find` command: locate elements by `--type` and `--setting` tests (`PATH`, `PATH=VALUE`, `PATH~TEXT`, dotted paths into repeaters).
 

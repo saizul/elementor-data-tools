@@ -137,6 +137,42 @@ decorative and never flagged. An `<img>` with `alt=""` is treated as intentional
 missing `alt` attribute is flagged. For media controls an empty stored alt is flagged; Elementor may
 still use the alt text of the media library item at render time, which an export cannot show.
 
+### Audit links
+
+```bash
+eltools links page.json --site example.com                 # every link, internal vs external
+eltools links page.json --check --forbid-host staging.example.com   # only problems (exit 1 if any)
+eltools links page.json --hosts                            # how many links point at each host
+eltools links page.json --type external --site example.com --json
+```
+
+```text
+0/0/2        button #e84a0b7  link  https://staging.example.com/shop/  [external]  FORBIDDEN-HOST
+0/0/3        button #b7710aa  link  (no url)  [other]  EMPTY
+1/0/0        text-editor #9d2c4f1  editor  http://partner.example.org/  [external new-tab nofollow]  INSECURE
+1/0/0        text-editor #9d2c4f1  editor  #  [other]  PLACEHOLDER
+7 link(s), 4 with issues
+```
+
+`links` reads Elementor link controls (button, heading, image, icon list and any other
+`{"url": ...}` setting that is not a media item) and `<a href>` tags inside any HTML text field. Each
+link gets a type: `anchor` (`#pricing`), `relative`, `mailto`, `tel`, `absolute` (or `internal` /
+`external` once you pass `--site`; `www.` is ignored when comparing), and `other`. Nothing is
+requested over the network, so it is safe on exports of private or offline sites.
+
+| Issue | Meaning |
+| --- | --- |
+| `EMPTY` | a button widget with no link |
+| `PLACEHOLDER` | `#`, `javascript:void(0)` or an empty `href`: usually left over from a template |
+| `INSECURE` | an `http://` URL |
+| `NO-SCHEME` | `www.example.com/page` without `https://`, which browsers treat as a relative path |
+| `WHITESPACE` | spaces around or inside the URL |
+| `FORBIDDEN-HOST` | the host (or a subdomain of it) was given with `--forbid-host`; use it after a migration to catch links that still point at staging or the old domain |
+
+Optional link controls left empty (an image without a link, for example) are not listed, and
+controls filled by a dynamic tag are skipped because their URL only exists at render time. `--json`
+includes JSON pointers, anchor text for HTML links, and the `new_tab` / `nofollow` flags.
+
 Validation catches: invalid or missing `elType`, widgets without `widgetType`, missing or
 duplicate ids, wrong nesting (a widget directly in a section, a column in a column, a
 top-level column), non-list `elements`, bad `settings`. Odd ids and a missing `elements`

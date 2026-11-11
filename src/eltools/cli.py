@@ -15,6 +15,7 @@ from eltools.extract import extract_fields, insert_fields
 from eltools.fields import TEXT_FIELDS
 from eltools.find import find_elements, parse_condition
 from eltools.images import find_images
+from eltools.links import LINK_TYPES, find_links, host_counts
 from eltools.replace import replace_text
 from eltools.tree import element_counts, max_depth, walk, widget_counts
 from eltools.validate import errors_only, validate
@@ -229,6 +230,61 @@ def cmd_images(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_links(args: argparse.Namespace) -> int:
+    doc = _read_doc(args.input)
+    if args.type in ("internal", "external") and not args.site:
+        raise ElementorDataError(f"--type {args.type} needs --site HOST")
+    refs = find_links(doc.elements, args.site, args.forbid_host)
+    total = len(refs)
+    flagged = sum(1 for r in refs if r.issues)
+    if args.type:
+        refs = [r for r in refs if r.type == args.type]
+    if args.check:
+        refs = [r for r in refs if r.issues]
+    if args.hosts:
+        counts = host_counts(refs)
+        if args.json:
+            print(json.dumps(dict(counts.most_common()), indent=2, ensure_ascii=False))
+        else:
+            width = max((len(h) for h in counts), default=5)
+            for host, count in counts.most_common():
+                print(f"{host:<{width}}  {count}")
+    elif args.json:
+        rows = [
+            {
+                "path": r.node.path_str,
+                "pointer": r.node.pointer,
+                "id": r.node.id,
+                "widget": r.node.kind,
+                "field": r.field,
+                "kind": r.kind,
+                "url": r.url,
+                "text": r.text,
+                "type": r.type,
+                "host": r.host,
+                "new_tab": r.new_tab,
+                "nofollow": r.nofollow,
+                "issues": r.issues,
+            }
+            for r in refs
+        ]
+        print(json.dumps(rows, indent=2, ensure_ascii=False))
+    else:
+        for r in refs:
+            flags = [r.type] + (["new-tab"] if r.new_tab else [])
+            flags += ["nofollow"] if r.nofollow else []
+            issues = "  " + " ".join(i.upper() for i in r.issues) if r.issues else ""
+            url = r.url if r.url.strip() else "(no url)"
+            print(
+                f"{r.node.path_str:<12} {r.node.kind} #{r.node.id}  {r.field}  {url}  "
+                f"[{' '.join(flags)}]{issues}"
+            )
+    print(f"{total} link(s), {flagged} with issues", file=sys.stderr)
+    if args.check:
+        return 1 if refs else 0
+    return 0
+
+
 def cmd_extract(args: argparse.Namespace) -> int:
     doc = _read_doc(args.input)
     entries = extract_fields(
@@ -416,6 +472,24 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--missing-alt", action="store_true", help="only images with no alt text")
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_images)
+
+    s = sub.add_parser(
+        "links", help="list links and flag broken-looking ones (--check exits 1 if any)"
+    )
+    s.add_argument("input")
+    s.add_argument("--site", metavar="HOST", help="the site's own host, to tell internal/external")
+    s.add_argument(
+        "--forbid-host",
+        action="append",
+        default=[],
+        metavar="HOST",
+        help="flag links to this host or its subdomains, e.g. a staging domain; repeatable",
+    )
+    s.add_argument("--type", choices=LINK_TYPES, help="only links of this type")
+    s.add_argument("--check", action="store_true", help="only links with issues")
+    s.add_argument("--hosts", action="store_true", help="print a count of links per host")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(func=cmd_links)
 
     s = sub.add_parser("extract", help="write widget text fields to files")
     s.add_argument("input")
