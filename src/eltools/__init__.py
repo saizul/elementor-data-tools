@@ -5,6 +5,7 @@ from eltools.document import Document, ElementorDataError, dumps, load, loads
 from eltools.extract import extract_fields, insert_fields
 from eltools.fields import TEXT_FIELDS
 from eltools.images import ImageRef, find_images
+from eltools.links import LinkRef, find_links
 from eltools.replace import Change, replace_text
 from eltools.tree import Node, element_counts, find_by_id, walk, widget_counts
 from eltools.validate import Issue, validate
@@ -20,6 +21,7 @@ __all__ = [
     "ElementorDataError",
     "ImageRef",
     "Issue",
+    "LinkRef",
     "Node",
     "command_template",
     "diff_documents",
@@ -28,6 +30,7 @@ __all__ = [
     "extract_fields",
     "find_by_id",
     "find_images",
+    "find_links",
     "insert_fields",
     "load",
     "loads",
