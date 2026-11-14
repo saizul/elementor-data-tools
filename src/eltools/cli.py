@@ -16,6 +16,7 @@ from eltools.fields import TEXT_FIELDS
 from eltools.find import find_elements, parse_condition
 from eltools.images import find_images
 from eltools.links import LINK_TYPES, find_links, host_counts
+from eltools.reid import IdChange, collect_ids, reassign_ids
 from eltools.replace import replace_text
 from eltools.tree import element_counts, max_depth, walk, widget_counts
 from eltools.validate import errors_only, validate
@@ -346,6 +347,47 @@ def cmd_replace(args: argparse.Namespace) -> int:
     return 0
 
 
+def _format_id_change(c: IdChange) -> str:
+    refs = f", {c.references} reference(s)" if c.references else ""
+    return f"{c.pointer:<28} {c.kind} #{c.old or '(none)'} -> #{c.new}  ({c.reason}{refs})"
+
+
+def cmd_reid(args: argparse.Namespace) -> int:
+    doc = _read_doc(args.input)
+    avoid: set[str] = set()
+    for other in args.avoid:
+        avoid |= collect_ids(_read_doc(other).elements)
+    preview = args.dry_run or args.check
+    if not preview and not (args.output or args.in_place):
+        raise ElementorDataError("choose --dry-run, --check, -o FILE or --in-place")
+    changes = reassign_ids(
+        doc.elements,
+        regenerate_all=args.all,
+        avoid=avoid,
+        seed=args.seed,
+        update_references=not args.no_references,
+        apply=not preview,
+    )
+    if args.map:
+        mapping = [c.to_dict() for c in changes]
+        _write_file(args.map, json.dumps(mapping, indent=2, ensure_ascii=False) + "\n")
+    refs = sum(c.references for c in changes)
+    summary = f"{len(changes)} id(s) {'to change' if preview else 'changed'}, {refs} reference(s)"
+    if preview:
+        if args.json:
+            print(json.dumps([c.to_dict() for c in changes], indent=2, ensure_ascii=False))
+        else:
+            for c in changes:
+                print(_format_id_change(c))
+        print(summary + " (nothing written)", file=sys.stderr)
+        return 1 if args.check and changes else 0
+    for c in changes:
+        print(_format_id_change(c), file=sys.stderr)
+    _save(doc, args)
+    print(summary, file=sys.stderr)
+    return 0
+
+
 def _short(value: Any, limit: int = 70) -> str:
     text = json.dumps(value, ensure_ascii=False)
     return text if len(text) <= limit else text[: limit - 3] + "..."
@@ -490,6 +532,35 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--hosts", action="store_true", help="print a count of links per host")
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_links)
+
+    s = sub.add_parser(
+        "reid",
+        help="give fresh ids to duplicate, missing or malformed element ids "
+        "(or --all), updating elementor-element-<id> references",
+    )
+    s.add_argument("input")
+    s.add_argument("--all", action="store_true", help="regenerate every id, not just bad ones")
+    s.add_argument(
+        "--avoid",
+        action="append",
+        default=[],
+        metavar="FILE",
+        help="also replace ids used in this export (the page you will paste into); repeatable",
+    )
+    s.add_argument("--seed", type=int, help="seed the id generator for reproducible output")
+    s.add_argument(
+        "--no-references",
+        action="store_true",
+        help="do not rewrite elementor-element-<id> strings in settings",
+    )
+    s.add_argument("--map", metavar="FILE", help="write the old -> new id list as JSON")
+    s.add_argument("-n", "--dry-run", action="store_true", help="list planned changes only")
+    s.add_argument(
+        "--check", action="store_true", help="like --dry-run, but exit 1 if any id needs changing"
+    )
+    s.add_argument("--json", action="store_true", help="with --dry-run/--check, print JSON")
+    _add_output_args(s)
+    s.set_defaults(func=cmd_reid)
 
     s = sub.add_parser("extract", help="write widget text fields to files")
     s.add_argument("input")
