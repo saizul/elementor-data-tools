@@ -6,6 +6,7 @@ from eltools.extract import extract_fields, insert_fields
 from eltools.fields import TEXT_FIELDS
 from eltools.images import ImageRef, find_images
 from eltools.links import LinkRef, find_links
+from eltools.reid import IdChange, reassign_ids
 from eltools.replace import Change, replace_text
 from eltools.tree import Node, element_counts, find_by_id, walk, widget_counts
 from eltools.validate import Issue, validate
@@ -19,6 +20,7 @@ __all__ = [
     "DiffResult",
     "Document",
     "ElementorDataError",
+    "IdChange",
     "ImageRef",
     "Issue",
     "LinkRef",
@@ -34,6 +36,7 @@ __all__ = [
     "insert_fields",
     "load",
     "loads",
+    "reassign_ids",
     "replace_text",
     "to_wp_meta",
     "validate",

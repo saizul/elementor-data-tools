@@ -229,6 +229,40 @@ which is exactly what a global database search-replace cannot promise. Literal m
 the default; add `--regex` (back-references work) and `-i` for case-insensitive. Write the
 result with `-o FILE` or `--in-place` (which keeps `FILE.bak`).
 
+### Fix duplicate ids before pasting content
+
+```bash
+eltools reid page.json --check                        # exit 1 if any id is duplicated, missing or malformed
+eltools reid page.json --in-place                     # fix them (keeps page.json.bak)
+eltools reid section.json --avoid target.json -o section.fixed.json   # ids free on the target page
+eltools reid template.json --all --map ids.json -o clean.json         # brand-new ids for every element
+```
+
+```text
+/1                           section #4f1a9c2 -> #52e6b43  (duplicate)
+/1/elements/0                column #7be03d1 -> #f2a74de  (duplicate)
+/1/elements/0/elements/0     html #c2d9a40 -> #269e0d3  (duplicate)
+...
+6 id(s) to change, 0 reference(s) (nothing written)
+```
+
+Elementor's generated CSS targets `.elementor-element-<id>`, so two elements with the same id
+on one page share styles and confuse the editor. `reid` gives a fresh random 7-hex-digit id to:
+
+- every later copy of a duplicated id (the first occurrence keeps its id),
+- missing or malformed ids (anything that is not 7 lowercase hex characters),
+- ids that also appear in an `--avoid FILE` export (repeatable), e.g. the page you will paste into,
+- or every element with `--all`.
+
+New ids never reuse an id found in the input or in `--avoid` files. `elementor-element-<old>`
+references in settings (custom CSS, HTML widgets, repeater fields) are rewritten to the new id:
+across the whole document for an id that was unique, and only inside the renamed copy for a
+duplicate, so the original keeps its references. `--no-references` turns that off.
+
+`--dry-run` lists the planned changes (`--json` for JSON), `--check` does the same but exits 1
+when anything would change (for CI), and `--map FILE` saves the old/new list. Writing needs
+`-o FILE` or `--in-place`; `--seed N` makes the ids reproducible.
+
 ### Compare two exports
 
 ```bash
@@ -287,13 +321,16 @@ that the encoded text parses back to identical data. Use `--wp-path` / `--url` t
 ## Library use
 
 ```python
-from eltools import load, validate, widget_counts, replace_text, diff_documents, to_wp_meta
+from eltools import (
+    diff_documents, load, reassign_ids, replace_text, to_wp_meta, validate, widget_counts,
+)
 
 doc = load("page.json")
 assert not [i for i in validate(doc.elements) if i.level == "error"]
 print(widget_counts(doc.elements).most_common(3))
 
 changes = replace_text(doc.elements, "2023", "2024", ("heading", "text-editor"))
+renamed = reassign_ids(doc.elements, avoid={"4f1a9c2"})  # fix duplicate/bad ids in place
 doc_json = to_wp_meta(doc)  # ready for wp post meta update
 ```
 
